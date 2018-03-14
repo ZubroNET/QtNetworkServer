@@ -3,7 +3,7 @@
 server::server(QObject *parent) :
     QObject(parent)
 {
-    if(!s.listen(QHostAddress::Any, 19060))
+    if(!s.listen(QHostAddress(address), port))
     {
         QTextStream(stdout) << "Server could not start" << endl;
     }
@@ -13,6 +13,7 @@ server::server(QObject *parent) :
         QTextStream(stdout) << "Server address: " << s.serverAddress().toString() << endl;
         QTextStream(stdout) << "Server port: " << s.serverPort() << endl;
     }
+    connect(&s, &QTcpServer::newConnection, this, &server::newClient);
 }
 
 QList<client *> server::getCList() const
@@ -35,11 +36,11 @@ void server::newClient()
     QTextStream(stdout) << "Local port: " << newclient->localPort() << endl;
     client *c = new client(newclient);
     connect(c, &client::disconnected, this, &server::removeClient);
-    QByteArray block;
-    QDataStream output(&block, QIODevice::WriteOnly);
-    output.setVersion(QDataStream::Qt_5_9);
-    output << QString("hello ") + newclient->peerAddress().toString() + ":" + QString::number(newclient->peerPort());
-    newclient->write(block);
+    //QByteArray block;
+    //QDataStream output(&block, QIODevice::WriteOnly);
+    //output.setVersion(QDataStream::Qt_5_9);
+    //output << QString("hello ") + newclient->peerAddress().toString() + ":" + QString::number(newclient->peerPort());
+    //newclient->write(block);
     cList.append(c);
     QTextStream(stdout) << newclient << endl;
     qDebug() << cList;

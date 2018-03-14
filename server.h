@@ -17,7 +17,6 @@ class server : public QObject
 public:
     explicit server(QObject *parent = 0);
     QList<client *> cList;
-
     QList<client *> getCList() const;
     void setCList(const QList<client *> &value);
     QTcpSocket *conn;
@@ -29,6 +28,9 @@ private slots:
 
 private:
     QTcpServer s;
+    quint16 port = 19060;
+    QString address = "10.12.5.10";
+
 };
 
 #endif // SERVER_H
