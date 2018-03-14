@@ -1,19 +1,18 @@
 #include "server.h"
 
-server::server(QObject *parent) :
-    QObject(parent)
+server::server()
 {
-    if(!s.listen(QHostAddress(address), port))
+    if(!this->listen(QHostAddress(address), port))
     {
         QTextStream(stdout) << "Server could not start" << endl;
     }
     else
     {
         QTextStream(stdout) << "Server started" << endl;
-        QTextStream(stdout) << "Server address: " << s.serverAddress().toString() << endl;
-        QTextStream(stdout) << "Server port: " << s.serverPort() << endl;
+        QTextStream(stdout) << "Server address: " << this->serverAddress().toString() << endl;
+        QTextStream(stdout) << "Server port: " << this->serverPort() << endl;
     }
-    connect(&s, &QTcpServer::newConnection, this, &server::newClient);
+    connect(this, &QTcpServer::newConnection, this, &server::newClient);
 }
 
 QList<client *> server::getCList() const
@@ -28,7 +27,7 @@ void server::setCList(const QList<client *> &value)
 
 void server::newClient()
 {
-    QTcpSocket *newclient = s.nextPendingConnection();
+    QTcpSocket *newclient = this->nextPendingConnection();
     QTextStream(stdout) << "Nove spojeni" << endl;
     QTextStream(stdout) << "Remote address: " << newclient->peerAddress().toString() << endl;
     QTextStream(stdout) << "Remote port: " << newclient->peerPort() << endl;

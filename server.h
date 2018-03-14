@@ -11,11 +11,11 @@
 #include <QTimer>
 #include "client.h"
 
-class server : public QObject
+class server : public QTcpServer
 {
     Q_OBJECT
 public:
-    explicit server(QObject *parent = 0);
+    server();
     QList<client *> cList;
     QList<client *> getCList() const;
     void setCList(const QList<client *> &value);

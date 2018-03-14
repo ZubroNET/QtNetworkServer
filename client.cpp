@@ -10,7 +10,6 @@ client::client(QTcpSocket *conn, QObject *parent):
 
 void client::gotMessage()
 {
-
     QByteArray bytes;
     QDataStream stream(&bytes, QIODevice::ReadOnly);
     stream.setDevice(conn);
